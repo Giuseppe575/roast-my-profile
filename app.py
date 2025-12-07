@@ -203,51 +203,60 @@ st.markdown('<main class="flex-1 flex flex-col p-4 gap-6">', unsafe_allow_html=T
 # 4. HERO UPLOAD ZONE (Visual + Functional Overlay)
 st.markdown("""
 <style>
-/* Make the Streamlit uploader invisible but clickable over the custom design */
-[data-testid="stFileUploader"] {
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-opacity: 0;
-z-index: 50; /* Ensure it's on top */
-cursor: pointer;
-}
-[data-testid="stFileUploader"] section {
-height: 100%;
-}
 /* Container for the custom design */
 .upload-container {
-position: relative;
-width: 100%;
-height: 300px; /* Adjust height as needed */
+    position: relative;
+    width: 100%;
+    height: 300px;
+    margin-bottom: -300px; /* Pull the next element (uploader) up */
+    z-index: 1;
+}
+
+/* Make the Streamlit uploader invisible but clickable */
+[data-testid="stFileUploader"] {
+    position: relative;
+    z-index: 99;
+    opacity: 0;
+    height: 300px;
+}
+[data-testid="stFileUploader"] section {
+    height: 300px;
+    padding: 0;
+}
+[data-testid="stFileUploader"] div[role="button"] {
+    height: 300px;
+    width: 100%;
 }
 </style>
+
 <div class="upload-container">
-<!-- Custom Design from code.html -->
-<div class="relative group mt-2 h-full">
-<!-- Decorative Stickers -->
-<div class="absolute -top-3 -right-3 z-20 transform rotate-12 text-4xl drop-shadow-md">😂</div>
-<div class="absolute -bottom-4 -left-2 z-20 transform -rotate-12 text-4xl drop-shadow-md">🔥</div>
-<div class="relative bg-black/20 dark:bg-black/40 border-4 border-dashed border-primary hover:border-secondary transition-colors duration-300 rounded-xl p-8 flex flex-col items-center justify-center gap-4 cursor-pointer overflow-hidden shadow-[0_0_15px_rgba(56,255,20,0.2)] hover:shadow-[0_0_25px_rgba(255,0,255,0.4)] h-full">
-<div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-10 pointer-events-none"></div>
-<div class="bg-surface rounded-full p-4 border-2 border-primary shadow-glow animate-pulse-fast">
-<span class="material-symbols-outlined text-primary text-5xl">cloud_upload</span>
-</div>
-<div class="text-center z-10">
-<h2 class="text-white font-black text-2xl uppercase tracking-tight mb-1 drop-shadow-md">
-Carica qui il tuo<br><span class="text-primary text-3xl italic">PROFILO CRINGE</span>
-</h2>
-<p class="text-gray-300 font-mono text-sm mt-2 bg-black/50 inline-block px-2 py-1 rounded">
-Scanner radioattivo pronto.
-</p>
-</div>
-<button class="mt-2 bg-primary hover:bg-white text-black font-bold py-2 px-6 rounded-none border-2 border-black shadow-neo active:shadow-none active:translate-x-1 active:translate-y-1 transition-all uppercase tracking-wider text-sm z-10">
-Sfoglia Galleria
-</button>
-</div>
-</div>
+    <!-- Custom Design from code.html -->
+    <div class="relative group mt-2 h-full">
+        <!-- Decorative Stickers -->
+        <div class="absolute -top-3 -right-3 z-20 transform rotate-12 text-4xl drop-shadow-md">😂</div>
+        <div class="absolute -bottom-4 -left-2 z-20 transform -rotate-12 text-4xl drop-shadow-md">🔥</div>
+        
+        <div class="relative bg-black/20 dark:bg-black/40 border-4 border-dashed border-primary hover:border-secondary transition-colors duration-300 rounded-xl p-8 flex flex-col items-center justify-center gap-4 cursor-pointer overflow-hidden shadow-[0_0_15px_rgba(56,255,20,0.2)] hover:shadow-[0_0_25px_rgba(255,0,255,0.4)] h-full">
+            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-10 pointer-events-none"></div>
+            
+            <div class="bg-surface rounded-full p-4 border-2 border-primary shadow-glow animate-pulse-fast">
+                <span class="material-symbols-outlined text-primary text-5xl">cloud_upload</span>
+            </div>
+            
+            <div class="text-center z-10">
+                <h2 class="text-white font-black text-2xl uppercase tracking-tight mb-1 drop-shadow-md">
+                    Carica qui il tuo<br><span class="text-primary text-3xl italic">PROFILO CRINGE</span>
+                </h2>
+                <p class="text-gray-300 font-mono text-sm mt-2 bg-black/50 inline-block px-2 py-1 rounded">
+                    Scanner radioattivo pronto.
+                </p>
+            </div>
+            
+            <button class="mt-2 bg-primary hover:bg-white text-black font-bold py-2 px-6 rounded-none border-2 border-black shadow-neo active:shadow-none active:translate-x-1 active:translate-y-1 transition-all uppercase tracking-wider text-sm z-10">
+                Sfoglia Galleria
+            </button>
+        </div>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
