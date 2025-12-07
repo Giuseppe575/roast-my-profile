@@ -274,7 +274,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- GEMINI API CONFIG ---
-MODEL_NAME = "gemini-1.5-flash-latest"  # Modello economico
+MODEL_NAME = "models/gemini-1.5-flash"  # Modello economico
 
 # Get API Key from secrets
 if "GEMINI_API_KEY" not in st.secrets:
