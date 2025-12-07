@@ -1,6 +1,8 @@
 import streamlit as st
-import google.generativeai as genai
+import vertexai
+from vertexai.generative_models import GenerativeModel, Part
 from PIL import Image
+import io
 
 # Setup Page
 st.set_page_config(
@@ -273,115 +275,68 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# --- API KEY HANDLING ---
-api_key = None
-with st.expander("⚙️ Configurazione Avanzata", expanded=False):
-    model_name = st.selectbox(
-        "Seleziona Modello AI", 
-        [
-            "gemini-1.5-flash-001",
-            "gemini-1.5-pro-latest",
-            "gemini-2.0-flash", 
-            "gemini-2.0-flash-exp", 
-            "gemini-1.5-flash",
-            "gemini-1.5-flash-8b"
-        ],
-        index=0
-    )
-    user_api_key = st.text_input("Inserisci la tua Google Gemini API Key (opzionale se già configurata):", type="password")
-    if user_api_key:
-        api_key = user_api_key
-    elif "GEMINI_API_KEY" in st.secrets:
-        api_key = st.secrets["GEMINI_API_KEY"]
-
-import time
+# --- VERTEX AI CONFIG ---
+PROJECT_ID = "roastami-app"
+LOCATION = "us-central1"
+MODEL_NAME = "gemini-1.5-flash-001"
 
 # Streamlit Uploader
 uploaded_file = st.file_uploader("Scegli un'immagine", type=['png', 'jpg', 'jpeg'], label_visibility="collapsed", key="img_uploader")
 
 if uploaded_file is not None:
-    if not api_key:
-        st.error("⚠️ Inserisci una API Key per procedere!")
-    else:
-        # 5. LOADING STATE (Simulated Visual)
-        loading_placeholder = st.empty()
+    # 5. LOADING STATE (Simulated Visual)
+    loading_placeholder = st.empty()
+    loading_placeholder.markdown("""
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px;">
+<div style="display: flex; justify-content: space-between; align-items: flex-end;">
+<label style="color: white; font-family: 'VT323', monospace; font-size: 1.125rem; animation: pulse 1.5s infinite;">STO CUCINANDO... 🔥</label>
+<span style="color: #38ff14; font-family: 'VT323', monospace; font-size: 1.25rem;">0%</span>
+</div>
+<div style="height: 32px; width: 100%; background-color: black; border: 2px solid rgba(255,255,255,0.2); position: relative; overflow: hidden;">
+<div style="position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(to right, #facc15, #f97316, #dc2626); width: 10%; box-shadow: 0 0 15px rgba(255,100,0,0.8);"></div>
+</div>
+<p style="font-size: 0.75rem; color: #00ffff; font-family: 'VT323', monospace; text-align: right;">Inizializzazione...</p>
+</div>
+""", unsafe_allow_html=True)
+
+    try:
+        # Initialize Vertex AI
+        vertexai.init(project=PROJECT_ID, location=LOCATION)
+        model = GenerativeModel(MODEL_NAME)
+        
+        # Load Image as bytes for Vertex AI
+        image_bytes = uploaded_file.getvalue()
+        mime_type = uploaded_file.type or "image/jpeg"
+            
+        # Update Loading
         loading_placeholder.markdown("""
-<div class="flex flex-col gap-2 mt-4">
-<div class="flex justify-between items-end">
-<label class="text-white font-mono text-lg animate-pulse">STO CUCINANDO... 🔥</label>
-<span class="text-primary font-mono text-xl">0%</span>
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px;">
+<div style="display: flex; justify-content: space-between; align-items: flex-end;">
+<label style="color: white; font-family: 'VT323', monospace; font-size: 1.125rem; animation: pulse 1.5s infinite;">ANALISI CRINGE... ☢️</label>
+<span style="color: #38ff14; font-family: 'VT323', monospace; font-size: 1.25rem;">65%</span>
 </div>
-<div class="h-8 w-full bg-black border-2 border-white/20 rounded-none relative overflow-hidden">
-<div class="absolute inset-0 bg-gradient-to-t from-red-900/50 via-transparent to-transparent"></div>
-<div class="absolute top-0 left-0 h-full bg-gradient-to-r from-yellow-400 via-orange-500 to-red-600 w-[10%] transition-all duration-1000 shadow-[0_0_15px_rgba(255,100,0,0.8)] animate-fire-flicker">
-<div class="absolute -right-2 top-[-16px] text-4xl animate-fire-flicker">🔥</div>
-<div class="w-full h-full bg-[linear-gradient(45deg,rgba(255,255,255,0.1)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.1)_50%,rgba(255,255,255,0.1)_75%,transparent_75%,transparent)] bg-[length:30px_30px] opacity-50"></div>
+<div style="height: 32px; width: 100%; background-color: black; border: 2px solid rgba(255,255,255,0.2); position: relative; overflow: hidden;">
+<div style="position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(to right, #facc15, #f97316, #dc2626); width: 65%; box-shadow: 0 0 15px rgba(255,100,0,0.8);"></div>
 </div>
-<div class="absolute inset-0" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.5) 1px, rgba(0,0,0,0.5) 2px);"></div>
-</div>
-<p class="text-xs text-accent font-mono text-right">Inizializzazione...</p>
+<p style="font-size: 0.75rem; color: #00ffff; font-family: 'VT323', monospace; text-align: right;">Giudicando le tue scelte di vita...</p>
 </div>
 """, unsafe_allow_html=True)
 
-        try:
-            genai.configure(api_key=api_key)
-            model = genai.GenerativeModel(model_name)
-            
-            # Load Image
-            image = Image.open(uploaded_file)
-            
-            # Update Loading
-            loading_placeholder.markdown("""
-<div class="flex flex-col gap-2 mt-4">
-<div class="flex justify-between items-end">
-<label class="text-white font-mono text-lg animate-pulse">ANALISI CRINGE... ☢️</label>
-<span class="text-primary font-mono text-xl">65%</span>
-</div>
-<div class="h-8 w-full bg-black border-2 border-white/20 rounded-none relative overflow-hidden">
-<div class="absolute inset-0 bg-gradient-to-t from-red-900/50 via-transparent to-transparent"></div>
-<div class="absolute top-0 left-0 h-full bg-gradient-to-r from-yellow-400 via-orange-500 to-red-600 w-[65%] transition-all duration-1000 shadow-[0_0_15px_rgba(255,100,0,0.8)] animate-fire-flicker">
-<div class="absolute -right-2 top-[-16px] text-4xl animate-fire-flicker">🔥</div>
-<div class="w-full h-full bg-[linear-gradient(45deg,rgba(255,255,255,0.1)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.1)_50%,rgba(255,255,255,0.1)_75%,transparent_75%,transparent)] bg-[length:30px_30px] opacity-50"></div>
-</div>
-<div class="absolute inset-0" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.5) 1px, rgba(0,0,0,0.5) 2px);"></div>
-</div>
-<p class="text-xs text-accent font-mono text-right">Giudicando le tue scelte di vita...</p>
-</div>
-""", unsafe_allow_html=True)
+        # Generate Roast with Vertex AI
+        prompt = """Sei un comico crudele della Gen Z. Analizza la foto profilo. Fai un roast (insulto satirico) in italiano slang (bro, cringe, amo, red flag). Massimo 3 frasi taglienti. Voto finale da 1 a 10."""
+        
+        # Create image part for Vertex AI
+        image_part = Part.from_data(image_bytes, mime_type=mime_type)
+        
+        # Generate content
+        response = model.generate_content([prompt, image_part])
+        roast_text = response.text
+        
+        # Remove loading bar
+        loading_placeholder.empty()
 
-            # Generate Roast with Retry Logic
-            prompt = """Sei un comico della Generazione Z, sarcastico, spietato ma divertente.
-Il tuo compito è guardare la foto profilo fornita e fare un "ROAST" (presa in giro).
-REGOLE:
-1. Usa slang italiano corrente (bro, cringe, amo, red flag, boomer, NPC).
-2. Sii breve (massimo 3 frasi taglienti).
-3. Non fare prediche morali.
-4. Concentrati su dettagli visivi: vestiti, espressione, sfondo, qualità della foto.
-5. Chiudi con un voto da 1 a 10 (es: "Voto: -2/10")."""
-            
-            retry_count = 0
-            max_retries = 3
-            roast_text = ""
-            
-            while retry_count < max_retries:
-                try:
-                    response = model.generate_content([prompt, image])
-                    roast_text = response.text
-                    break
-                except Exception as e:
-                    if "429" in str(e):
-                        retry_count += 1
-                        time.sleep(2 ** retry_count) # Exponential backoff: 2s, 4s, 8s
-                        if retry_count == max_retries:
-                            raise e
-                    else:
-                        raise e
-            
-            # Final Loading State
-            loading_placeholder.empty() # Remove loading bar
-
-            # 6. RESULT BOX
-            st.markdown(f"""
+        # 6. RESULT BOX
+        st.markdown(f"""
 <div class="relative mt-2 animate-shake">
 <div class="absolute inset-0 border-8 border-danger pointer-events-none shadow-glow-danger rounded-sm"></div>
 <div class="bg-gray-300 border-2 border-b-0 border-white border-r-gray-600 border-b-gray-600 border-l-white flex justify-between items-center px-2 py-1 select-none">
@@ -405,15 +360,16 @@ REGOLE:
 </div>
 </div>
 """, unsafe_allow_html=True)
-            
-        except Exception as e:
-            error_msg = str(e)
-            if "404" in error_msg:
-                st.error(f"⚠️ Errore 404: Il modello '{model_name}' non è stato trovato o non è supportato. Prova a selezionare un altro modello dal menu 'Configurazione Avanzata'.")
-            elif "429" in error_msg:
-                st.error("🔥 Troppa gente vuole essere insultata! Riprova tra 10 secondi o cambia modello dal menu.")
-            else:
-                st.error(f"Errore durante il roast: {e}")
+    except Exception as e:
+        error_msg = str(e)
+        if "Could not automatically determine credentials" in error_msg or "DefaultCredentialsError" in error_msg:
+            st.error("🔐 Autenticazione richiesta! Esegui nel terminale: `gcloud auth application-default login`")
+        elif "404" in error_msg:
+            st.error(f"⚠️ Errore 404: Il modello non è stato trovato. Verifica la configurazione Vertex AI.")
+        elif "403" in error_msg:
+            st.error("🚫 Accesso negato. Verifica che il progetto Google Cloud abbia la fatturazione attiva e le API abilitate.")
+        else:
+            st.error(f"Errore durante il roast: {e}")
 
 # Action Buttons (Always visible at bottom)
 # Action Buttons (Functional)
