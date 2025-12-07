@@ -1,6 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
+import io
 
 # Setup Page
 st.set_page_config(
@@ -8,6 +9,67 @@ st.set_page_config(
     layout="centered",
     initial_sidebar_state="collapsed"
 )
+
+# --- IMAGE GENERATION FUNCTION ---
+def create_share_image(text):
+    """Create a shareable image with the roast text"""
+    # Image dimensions
+    width, height = 600, 400
+    
+    # Create white background
+    img = Image.new('RGB', (width, height), color='white')
+    draw = ImageDraw.Draw(img)
+    
+    # Draw red border (thick, "Critical Error" style)
+    border_width = 15
+    draw.rectangle([0, 0, width-1, height-1], outline='#dc2626', width=border_width)
+    
+    # Inner red line
+    draw.rectangle([border_width+5, border_width+5, width-border_width-6, height-border_width-6], outline='#dc2626', width=3)
+    
+    # Title bar
+    draw.rectangle([border_width+10, border_width+10, width-border_width-11, border_width+40], fill='#dc2626')
+    
+    # Try to use a monospace font, fallback to default
+    try:
+        title_font = ImageFont.truetype("arial.ttf", 16)
+        text_font = ImageFont.truetype("arial.ttf", 18)
+    except:
+        title_font = ImageFont.load_default()
+        text_font = ImageFont.load_default()
+    
+    # Title text
+    draw.text((border_width+20, border_width+15), "⚠️ ROASTAMI - CRITICO", fill='white', font=title_font)
+    
+    # Wrap text to fit
+    max_chars_per_line = 40
+    words = text.split()
+    lines = []
+    current_line = ""
+    for word in words:
+        if len(current_line) + len(word) + 1 <= max_chars_per_line:
+            current_line += (" " if current_line else "") + word
+        else:
+            if current_line:
+                lines.append(current_line)
+            current_line = word
+    if current_line:
+        lines.append(current_line)
+    
+    # Draw roast text
+    y_position = border_width + 60
+    for line in lines[:8]:  # Max 8 lines
+        draw.text((border_width+20, y_position), line, fill='black', font=text_font)
+        y_position += 28
+    
+    # Footer
+    draw.text((border_width+20, height-border_width-35), "> Suggerimento: Cancella l'account.", fill='#dc2626', font=text_font)
+    
+    # Convert to bytes
+    img_bytes = io.BytesIO()
+    img.save(img_bytes, format='PNG')
+    img_bytes.seek(0)
+    return img_bytes.getvalue()
 
 # --- CSS & HEAD INJECTION ---
 st.markdown("""
@@ -329,6 +391,9 @@ if uploaded_file is not None:
         response = model.generate_content([prompt, image])
         roast_text = response.text
         
+        # Save to session state for download button
+        st.session_state["last_roast"] = roast_text
+        
         # Remove loading bar
         loading_placeholder.empty()
 
@@ -367,7 +432,6 @@ if uploaded_file is not None:
             st.error(f"Errore durante il roast: {e}")
 
 # Action Buttons (Always visible at bottom)
-# Action Buttons (Functional)
 col1, col2 = st.columns(2)
 with col1:
     if st.button("🔄 NE VOGLIO ANCORA", use_container_width=True, type="primary"):
@@ -375,8 +439,19 @@ with col1:
         st.rerun()
 
 with col2:
-    if st.button("📤 CONDIVIDI", use_container_width=True):
-        st.toast("🔥 Screenshotta e umiliati su Instagram!", icon="📸")
+    # Download button for sharing (only show if roast exists)
+    if "last_roast" in st.session_state and st.session_state["last_roast"]:
+        share_image = create_share_image(st.session_state["last_roast"])
+        st.download_button(
+            label="💾 SCARICA PER I SOCIAL",
+            data=share_image,
+            file_name="roast.png",
+            mime="image/png",
+            use_container_width=True
+        )
+    else:
+        if st.button("📸 CONDIVIDI", use_container_width=True):
+            st.toast("🔥 Carica prima un'immagine per generare un roast!", icon="⚠️")
 
 
 # Close Main Wrapper
