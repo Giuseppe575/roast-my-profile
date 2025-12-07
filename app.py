@@ -1,8 +1,6 @@
 import streamlit as st
-import vertexai
-from vertexai.generative_models import GenerativeModel, Part
+import google.generativeai as genai
 from PIL import Image
-import io
 
 # Setup Page
 st.set_page_config(
@@ -275,10 +273,17 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# --- VERTEX AI CONFIG ---
-PROJECT_ID = "roastami-app"
-LOCATION = "us-central1"
-MODEL_NAME = "gemini-1.5-flash-001"
+# --- GEMINI API CONFIG ---
+MODEL_NAME = "gemini-1.5-flash"  # Modello economico
+
+# Get API Key from secrets
+if "GEMINI_API_KEY" not in st.secrets:
+    st.error("🔐 API Key mancante! Aggiungi GEMINI_API_KEY in .streamlit/secrets.toml")
+    st.stop()
+
+api_key = st.secrets["GEMINI_API_KEY"]
+genai.configure(api_key=api_key)
+model = genai.GenerativeModel(MODEL_NAME)
 
 # Streamlit Uploader
 uploaded_file = st.file_uploader("Scegli un'immagine", type=['png', 'jpg', 'jpeg'], label_visibility="collapsed", key="img_uploader")
@@ -300,13 +305,8 @@ if uploaded_file is not None:
 """, unsafe_allow_html=True)
 
     try:
-        # Initialize Vertex AI
-        vertexai.init(project=PROJECT_ID, location=LOCATION)
-        model = GenerativeModel(MODEL_NAME)
-        
-        # Load Image as bytes for Vertex AI
-        image_bytes = uploaded_file.getvalue()
-        mime_type = uploaded_file.type or "image/jpeg"
+        # Load Image
+        image = Image.open(uploaded_file)
             
         # Update Loading
         loading_placeholder.markdown("""
@@ -322,14 +322,11 @@ if uploaded_file is not None:
 </div>
 """, unsafe_allow_html=True)
 
-        # Generate Roast with Vertex AI
+        # Generate Roast with Gemini
         prompt = """Sei un comico crudele della Gen Z. Analizza la foto profilo. Fai un roast (insulto satirico) in italiano slang (bro, cringe, amo, red flag). Massimo 3 frasi taglienti. Voto finale da 1 a 10."""
         
-        # Create image part for Vertex AI
-        image_part = Part.from_data(image_bytes, mime_type=mime_type)
-        
         # Generate content
-        response = model.generate_content([prompt, image_part])
+        response = model.generate_content([prompt, image])
         roast_text = response.text
         
         # Remove loading bar
@@ -362,12 +359,10 @@ if uploaded_file is not None:
 """, unsafe_allow_html=True)
     except Exception as e:
         error_msg = str(e)
-        if "Could not automatically determine credentials" in error_msg or "DefaultCredentialsError" in error_msg:
-            st.error("🔐 Autenticazione richiesta! Esegui nel terminale: `gcloud auth application-default login`")
+        if "429" in error_msg:
+            st.error("🔥 Troppa gente vuole essere insultata! Riprova tra qualche secondo.")
         elif "404" in error_msg:
-            st.error(f"⚠️ Errore 404: Il modello non è stato trovato. Verifica la configurazione Vertex AI.")
-        elif "403" in error_msg:
-            st.error("🚫 Accesso negato. Verifica che il progetto Google Cloud abbia la fatturazione attiva e le API abilitate.")
+            st.error("⚠️ Errore 404: Il modello non è stato trovato.")
         else:
             st.error(f"Errore durante il roast: {e}")
 
