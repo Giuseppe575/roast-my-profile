@@ -274,7 +274,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- GEMINI API CONFIG ---
-MODEL_NAME = "gemini-pro-vision"  # Modello per immagini
+MODEL_NAME = "gemini-2.5-flash"  # Modello disponibile
 
 # Get API Key from secrets
 if "GEMINI_API_KEY" not in st.secrets:
