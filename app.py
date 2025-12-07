@@ -201,64 +201,72 @@ tailwind.config = {
 # Background Grid
 st.markdown('<div class="fixed inset-0 pointer-events-none opacity-20 bg-grid-pattern z-0"></div>', unsafe_allow_html=True)
 
-# HEADER & MARQUEE (From code.html)
+# HEADER & MARQUEE (With inline styles for Streamlit compatibility)
 st.markdown("""
-<header class="bg-[#120821] p-4 border-b-4 border-primary">
-<div class="flex items-center justify-between">
-<span class="material-symbols-outlined text-primary text-3xl animate-pulse">skull</span>
-<h1 class="text-3xl font-black tracking-tighter text-white italic glitch-text" data-text="ROASTAMI 💀">ROASTAMI 💀</h1>
-<div class="w-8"></div>
+<header style="background-color: #120821; padding: 16px; border-bottom: 4px solid #38ff14;">
+<div style="display: flex; align-items: center; justify-content: space-between;">
+<span class="material-symbols-outlined" style="color: #38ff14; font-size: 2rem; animation: pulse 1.5s infinite;">skull</span>
+<h1 style="font-size: 1.875rem; font-weight: 900; letter-spacing: -0.05em; color: white; font-style: italic; font-family: 'Space Grotesk', sans-serif;">ROASTAMI 💀</h1>
+<div style="width: 32px;"></div>
 </div>
 </header>
-<div class="bg-primary border-b-4 border-black overflow-hidden py-2 whitespace-nowrap relative">
-<div class="animate-marquee inline-block">
-<span class="text-black font-mono font-bold text-xl px-4 uppercase tracking-widest">⚠️ ATTENZIONE: DANNO EMOTIVO IMMINENTE ⚠️ NON APRIRE SE SEI SENSIBILE ⚠️ CRINGE LEVEL: CRITICAL ⚠️</span>
+<div style="background-color: #38ff14; border-bottom: 4px solid black; overflow: hidden; padding: 8px 0; white-space: nowrap; position: relative;">
+<div style="display: inline-block; animation: marquee 10s linear infinite;">
+<span style="color: black; font-family: 'VT323', monospace; font-weight: bold; font-size: 1.25rem; padding: 0 16px; text-transform: uppercase; letter-spacing: 0.1em;">⚠️ ATTENZIONE: DANNO EMOTIVO IMMINENTE ⚠️ NON APRIRE SE SEI SENSIBILE ⚠️ CRINGE LEVEL: CRITICAL ⚠️</span>
 </div>
 </div>
 """, unsafe_allow_html=True)
 
 # Main Content Wrapper
-st.markdown('<main class="flex-1 flex flex-col p-4 gap-6">', unsafe_allow_html=True)
+st.markdown('<main style="flex: 1; display: flex; flex-direction: column; padding: 16px; gap: 24px;">', unsafe_allow_html=True)
 
-# HERO UPLOAD ZONE (From code.html)
+# HERO UPLOAD ZONE (With inline styles)
 st.markdown("""
 <style>
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
 .upload-container {
-position: relative;
-width: 100%;
-height: 280px;
-margin-bottom: -280px;
-z-index: 1;
-margin-top: 8px;
+  position: relative;
+  width: 100%;
+  height: 280px;
+  margin-bottom: -280px;
+  z-index: 1;
+  margin-top: 8px;
 }
 [data-testid="stFileUploader"] {
-position: relative;
-z-index: 99;
-opacity: 0;
-height: 280px;
+  position: relative;
+  z-index: 99;
+  opacity: 0;
+  height: 280px;
 }
 [data-testid="stFileUploader"] section {
-height: 280px;
-padding: 0;
+  height: 280px;
+  padding: 0;
 }
 [data-testid="stFileUploader"] div[role="button"] {
-height: 280px;
-width: 100%;
+  height: 280px;
+  width: 100%;
 }
 </style>
 
 <div class="upload-container">
-<div class="relative group mt-2">
-<div class="absolute -top-3 -right-3 z-20 transform rotate-12 text-4xl drop-shadow-md">😂</div>
-<div class="absolute -bottom-4 -left-2 z-20 transform -rotate-12 text-4xl drop-shadow-md">🔥</div>
-<div class="relative bg-black/20 dark:bg-black/40 border-4 border-dashed border-primary hover:border-secondary transition-colors duration-300 rounded-xl p-8 flex flex-col items-center justify-center gap-4 cursor-pointer overflow-hidden shadow-[0_0_15px_rgba(56,255,20,0.2)] hover:shadow-[0_0_25px_rgba(255,0,255,0.4)]">
-<div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-10 pointer-events-none"></div>
-<div class="bg-surface rounded-full p-4 border-2 border-primary shadow-glow animate-pulse-fast">
-<span class="material-symbols-outlined text-primary text-5xl">cloud_upload</span>
+<div style="position: relative; margin-top: 8px;">
+<div style="position: absolute; top: -12px; right: -12px; z-index: 20; transform: rotate(12deg); font-size: 2rem; filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));">😂</div>
+<div style="position: absolute; bottom: -16px; left: -8px; z-index: 20; transform: rotate(-12deg); font-size: 2rem; filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));">🔥</div>
+<div style="position: relative; background-color: rgba(0,0,0,0.4); border: 4px dashed #38ff14; border-radius: 12px; padding: 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; cursor: pointer; overflow: hidden; box-shadow: 0 0 15px rgba(56,255,20,0.2); height: 260px;">
+<div style="position: absolute; inset: 0; background-image: url('https://www.transparenttextures.com/patterns/diagmonds-light.png'); opacity: 0.1; pointer-events: none;"></div>
+<div style="background-color: #2d1b4e; border-radius: 9999px; padding: 16px; border: 2px solid #38ff14; box-shadow: 0 0 10px #38ff14, 0 0 20px #38ff14; animation: pulse 1.5s infinite;">
+<span class="material-symbols-outlined" style="color: #38ff14; font-size: 3rem;">cloud_upload</span>
 </div>
-<div class="text-center z-10">
-<h2 class="text-white font-black text-2xl uppercase tracking-tight mb-1 drop-shadow-md">Carica qui il tuo<br/><span class="text-primary text-3xl italic">PROFILO CRINGE</span></h2>
-<p class="text-gray-300 font-mono text-sm mt-2 bg-black/50 inline-block px-2 py-1 rounded">Scanner radioattivo pronto.</p>
+<div style="text-align: center; z-index: 10;">
+<h2 style="color: white; font-weight: 900; font-size: 1.5rem; text-transform: uppercase; letter-spacing: -0.025em; margin-bottom: 4px; filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5)); font-family: 'Space Grotesk', sans-serif;">Carica qui il tuo<br/><span style="color: #38ff14; font-size: 1.875rem; font-style: italic;">PROFILO CRINGE</span></h2>
+<p style="color: #d1d5db; font-family: 'VT323', monospace; font-size: 0.875rem; margin-top: 8px; background-color: rgba(0,0,0,0.5); display: inline-block; padding: 4px 8px; border-radius: 4px;">Scanner radioattivo pronto.</p>
 </div>
 </div>
 </div>
