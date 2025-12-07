@@ -414,9 +414,7 @@ if uploaded_file is not None:
 col1, col2 = st.columns(2)
 with col1:
     if st.button("🔄 NE VOGLIO ANCORA", use_container_width=True, type="primary"):
-        # Clear the uploader state to reset the app
-        if "img_uploader" in st.session_state:
-            st.session_state["img_uploader"] = None
+        # Just rerun the app to reset
         st.rerun()
 
 with col2:
