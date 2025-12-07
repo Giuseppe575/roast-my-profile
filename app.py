@@ -453,6 +453,15 @@ with col2:
         if st.button("📸 CONDIVIDI", use_container_width=True):
             st.toast("🔥 Carica prima un'immagine per generare un roast!", icon="⚠️")
 
+# Ko-fi Donation Button
+st.markdown("""
+<div style="text-align: center; margin-top: 24px; padding: 16px;">
+<a href="https://ko-fi.com/giuseppecodice" target="_blank" style="display: inline-block; background-color: #FFDD00; color: black; font-weight: bold; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: transform 0.2s;">
+☕ OFFRIMI UN CAFFÈ
+</a>
+<p style="color: #888; font-size: 0.75rem; margin-top: 8px;">Se ti ho fatto ridere, supporta il progetto!</p>
+</div>
+""", unsafe_allow_html=True)
 
 # Close Main Wrapper
 st.markdown('</main>', unsafe_allow_html=True)
