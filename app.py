@@ -95,15 +95,26 @@ tailwind.config = {
 </script>
 
 <style>
-    /* FORCE MOBILE LAYOUT */
+    /* FORCE MOBILE LAYOUT & WRAPPER STYLING */
     .block-container {
         max-width: 420px !important;
         padding: 0 !important;
         margin: 0 auto !important;
-        background-color: #1a0b2e;
+        background-color: #f0f0f0; /* background-light */
         min-height: 100vh;
-        border-left: 1px solid #333;
-        border-right: 1px solid #333;
+        border-left: 2px solid black;
+        border-right: 2px solid black;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
+        position: relative;
+        z-index: 10;
+    }
+    
+    /* Dark Mode Override for Wrapper */
+    @media (prefers-color-scheme: dark) {
+        .block-container {
+            background-color: #120821;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
     }
 
     /* Background Pattern */
@@ -193,22 +204,13 @@ tailwind.config = {
 # Background Grid
 st.markdown('<div class="fixed inset-0 pointer-events-none opacity-20 bg-grid-pattern z-0"></div>', unsafe_allow_html=True)
 
-# Wrapper for the "Phone/App" view
-st.markdown("""
-<div class="relative z-10 flex flex-col min-h-screen max-w-md mx-auto border-x-0 sm:border-x-2 border-black dark:border-white/10 bg-background-light dark:bg-[#120821] shadow-2xl">
-""", unsafe_allow_html=True)
-
-# 1. HEADER
+# HEADER & MARQUEE (Consolidated)
 st.markdown("""
 <header class="bg-[#120821] p-4 border-b-4 border-primary">
 <div class="flex items-center justify-center">
 <h1 class="text-4xl font-black tracking-tighter text-white italic glitch-text" data-text="ROASTAMI 💀">ROASTAMI 💀</h1>
 </div>
 </header>
-""", unsafe_allow_html=True)
-
-# 2. MARQUEE
-st.markdown("""
 <div class="bg-primary border-b-4 border-black overflow-hidden py-2 whitespace-nowrap relative">
 <div class="animate-marquee inline-block">
 <span class="text-black font-mono font-bold text-2xl px-4 uppercase tracking-widest text-stroke-sm" style="text-shadow: 2px 2px 0 #ff00ff, -2px -2px 0 #00ffff;">⚠️ ATTENZIONE: DANNO EMOTIVO IMMINENTE ⚠️</span>
@@ -219,59 +221,57 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# 3. MAIN CONTENT START
-st.markdown('<main class="flex-1 flex flex-col p-4 gap-6">', unsafe_allow_html=True)
-
+# 4. HERO UPLOAD ZONE (Visual + Functional Overlay)
 # 4. HERO UPLOAD ZONE (Visual + Functional Overlay)
 st.markdown("""
 <style>
 /* Container for the custom design */
 .upload-container {
-    position: relative;
-    width: 100%;
-    height: 350px; /* Increased height for new design */
-    margin-bottom: -350px; /* Pull the next element (uploader) up */
-    z-index: 1;
+position: relative;
+width: 100%;
+height: 350px; /* Increased height for new design */
+margin-bottom: -350px; /* Pull the next element (uploader) up */
+z-index: 1;
 }
 
 /* Make the Streamlit uploader invisible but clickable */
 [data-testid="stFileUploader"] {
-    position: relative;
-    z-index: 99;
-    opacity: 0;
-    height: 350px;
+position: relative;
+z-index: 99;
+opacity: 0;
+height: 350px;
 }
 [data-testid="stFileUploader"] section {
-    height: 350px;
-    padding: 0;
+height: 350px;
+padding: 0;
 }
 [data-testid="stFileUploader"] div[role="button"] {
-    height: 350px;
-    width: 100%;
+height: 350px;
+width: 100%;
 }
 </style>
 
 <div class="upload-container">
-    <!-- Custom Design from code.html -->
-    <div class="relative group mt-2 h-full">
-        <div class="absolute -top-6 -right-5 z-20 transform rotate-12 text-5xl animate-bounce-in drop-shadow-lg">😂</div>
-        <div class="absolute top-24 -left-6 z-20 transform -rotate-12 text-5xl animate-bounce-in drop-shadow-lg [animation-delay:0.2s]">☣️</div>
-        <div class="absolute -bottom-6 -left-4 z-20 transform rotate-6 text-5xl animate-bounce-in drop-shadow-lg [animation-delay:0.4s]">🤡</div>
-        <div class="absolute bottom-20 -right-7 z-20 transform -rotate-12 text-5xl animate-bounce-in drop-shadow-lg [animation-delay:0.6s]">🔥</div>
-        
-        <div class="relative bg-black/20 dark:bg-black/40 border-8 border-dashed border-primary hover:border-secondary transition-colors duration-300 rounded-xl p-8 flex flex-col items-center justify-center gap-4 cursor-pointer overflow-hidden shadow-glow hover:shadow-[0_0_40px_rgba(255,0,255,0.8)] animate-pulse-fast h-full">
-            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-10 pointer-events-none animate-strobe"></div>
-            
-            <div class="bg-surface rounded-full p-4 border-4 border-primary shadow-glow">
-                <span class="material-symbols-outlined text-primary text-6xl">cloud_upload</span>
-            </div>
-            
-            <div class="text-center z-10">
-                <h2 class="text-white font-black text-3xl uppercase tracking-tight mb-1 drop-shadow-md text-stroke">Carica qui il tuo<br/><span class="text-primary text-4xl italic">PROFILO CRINGE</span></h2>
-                <p class="text-gray-300 font-mono text-base mt-2 bg-black/50 inline-block px-2 py-1 rounded">Scanner radioattivo pronto.</p>
-            </div>
-        </div>
-    </div>
+<!-- Custom Design from code.html -->
+<div class="relative group mt-2 h-full">
+<div class="absolute -top-6 -right-5 z-20 transform rotate-12 text-5xl animate-bounce-in drop-shadow-lg">😂</div>
+<div class="absolute top-24 -left-6 z-20 transform -rotate-12 text-5xl animate-bounce-in drop-shadow-lg [animation-delay:0.2s]">☣️</div>
+<div class="absolute -bottom-6 -left-4 z-20 transform rotate-6 text-5xl animate-bounce-in drop-shadow-lg [animation-delay:0.4s]">🤡</div>
+<div class="absolute bottom-20 -right-7 z-20 transform -rotate-12 text-5xl animate-bounce-in drop-shadow-lg [animation-delay:0.6s]">🔥</div>
+
+<div class="relative bg-black/20 dark:bg-black/40 border-8 border-dashed border-primary hover:border-secondary transition-colors duration-300 rounded-xl p-8 flex flex-col items-center justify-center gap-4 cursor-pointer overflow-hidden shadow-glow hover:shadow-[0_0_40px_rgba(255,0,255,0.8)] animate-pulse-fast h-full">
+<div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-10 pointer-events-none animate-strobe"></div>
+
+<div class="bg-surface rounded-full p-4 border-4 border-primary shadow-glow">
+<span class="material-symbols-outlined text-primary text-6xl">cloud_upload</span>
+</div>
+
+<div class="text-center z-10">
+<h2 class="text-white font-black text-3xl uppercase tracking-tight mb-1 drop-shadow-md text-stroke">Carica qui il tuo<br/><span class="text-primary text-4xl italic">PROFILO CRINGE</span></h2>
+<p class="text-gray-300 font-mono text-base mt-2 bg-black/50 inline-block px-2 py-1 rounded">Scanner radioattivo pronto.</p>
+</div>
+</div>
+</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -427,4 +427,5 @@ with col2:
 
 
 # Close Main and Wrapper
-st.markdown("</main></div>", unsafe_allow_html=True)
+# Close Main and Wrapper
+# st.markdown("</main></div>", unsafe_allow_html=True) # Removed as we are not using open tags anymore
