@@ -274,7 +274,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- GEMINI API CONFIG ---
-MODEL_NAME = "models/gemini-1.5-flash"  # Modello economico
+MODEL_NAME = "gemini-1.5-flash"  # Modello economico
 
 # Get API Key from secrets
 if "GEMINI_API_KEY" not in st.secrets:
@@ -362,7 +362,7 @@ if uploaded_file is not None:
         if "429" in error_msg:
             st.error("🔥 Troppa gente vuole essere insultata! Riprova tra qualche secondo.")
         elif "404" in error_msg:
-            st.error("⚠️ Errore 404: Il modello non è stato trovato.")
+            st.error(f"⚠️ Errore 404: {error_msg}")
         else:
             st.error(f"Errore durante il roast: {e}")
 
