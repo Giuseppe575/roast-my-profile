@@ -279,11 +279,10 @@ with st.expander("⚙️ Configurazione Avanzata", expanded=False):
     model_name = st.selectbox(
         "Seleziona Modello AI", 
         [
+            "gemini-1.5-flash-001",
+            "gemini-1.5-pro-latest",
             "gemini-2.0-flash", 
             "gemini-2.0-flash-exp", 
-            "gemini-exp-1206",
-            "gemini-1.5-pro",
-            "gemini-pro-latest",
             "gemini-1.5-flash",
             "gemini-1.5-flash-8b"
         ],
@@ -351,7 +350,14 @@ if uploaded_file is not None:
 """, unsafe_allow_html=True)
 
             # Generate Roast with Retry Logic
-            prompt = "Sei un comico della Gen Z. Analizza la foto profilo e fai un roast (insulto divertente) breve e brutale in italiano slang."
+            prompt = """Sei un comico della Generazione Z, sarcastico, spietato ma divertente.
+Il tuo compito è guardare la foto profilo fornita e fare un "ROAST" (presa in giro).
+REGOLE:
+1. Usa slang italiano corrente (bro, cringe, amo, red flag, boomer, NPC).
+2. Sii breve (massimo 3 frasi taglienti).
+3. Non fare prediche morali.
+4. Concentrati su dettagli visivi: vestiti, espressione, sfondo, qualità della foto.
+5. Chiudi con un voto da 1 a 10 (es: "Voto: -2/10")."""
             
             retry_count = 0
             max_retries = 3
@@ -405,7 +411,7 @@ if uploaded_file is not None:
             if "404" in error_msg:
                 st.error(f"⚠️ Errore 404: Il modello '{model_name}' non è stato trovato o non è supportato. Prova a selezionare un altro modello dal menu 'Configurazione Avanzata'.")
             elif "429" in error_msg:
-                st.error("⚠️ Errore 429: Hai superato il limite di richieste. Prova a cambiare modello o attendi qualche minuto.")
+                st.error("🔥 Troppa gente vuole essere insultata! Riprova tra 10 secondi o cambia modello dal menu.")
             else:
                 st.error(f"Errore durante il roast: {e}")
 
