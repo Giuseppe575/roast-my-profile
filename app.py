@@ -63,92 +63,102 @@ st.markdown("""
     </script>
 
     <style>
-        /* Streamlit Overrides to match the design */
-        .stApp {
-            background-color: #1a0b2e; /* background-dark */
-            font-family: 'Space Grotesk', sans-serif;
+        /* FORCE MOBILE LAYOUT */
+        .block-container {
+            max-width: 420px !important;
+            padding: 0 !important;
+            margin: 0 auto !important;
+            background-color: #1a0b2e;
+            min-height: 100vh;
+            border-left: 1px solid #333;
+            border-right: 1px solid #333;
         }
-        
+
+        /* Background Pattern */
+        .stApp {
+            background-color: #000; /* Dark background outside phone */
+            background-image: radial-gradient(#1a0b2e 1px, #000 1px);
+            background-size: 20px 20px;
+        }
+
         /* Hide standard Streamlit elements */
         header {visibility: hidden;}
         footer {visibility: hidden;}
-        .block-container {
-            padding-top: 0rem;
-            padding-bottom: 0rem;
-            padding-left: 0rem;
-            padding-right: 0rem;
-            max-width: 100%;
-        }
-
-        /* Custom Styles from code.html */
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
-        .text-stroke {
-            -webkit-text-stroke: 1px black;
-        }
-        .bg-grid-pattern {
-            background-image: radial-gradient(#4a3b69 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-        .glitch-text {
-            position: relative;
-        }
-        .glitch-text::before,
-        .glitch-text::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        .glitch-text::before {
-            left: 2px;
-            text-shadow: -1px 0 #ff00ff;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim 5s infinite linear alternate-reverse;
-        }
-        .glitch-text::after {
-            left: -2px;
-            text-shadow: -1px 0 #00ffff;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim2 5s infinite linear alternate-reverse;
-        }
-        @keyframes glitch-anim {
-            0% { clip: rect(33px, 9999px, 11px, 0); }
-            20% { clip: rect(89px, 9999px, 93px, 0); }
-            40% { clip: rect(12px, 9999px, 49px, 0); }
-            60% { clip: rect(55px, 9999px, 18px, 0); }
-            80% { clip: rect(6px, 9999px, 34px, 0); }
-            100% { clip: rect(22px, 9999px, 67px, 0); }
-        }
-        @keyframes glitch-anim2 {
-            0% { clip: rect(2px, 9999px, 86px, 0); }
-            20% { clip: rect(15px, 9999px, 2px, 0); }
-            40% { clip: rect(54px, 9999px, 29px, 0); }
-            60% { clip: rect(9px, 9999px, 98px, 0); }
-            80% { clip: rect(76px, 9999px, 12px, 0); }
-            100% { clip: rect(34px, 9999px, 54px, 0); }
-        }
-
-        /* File Uploader Customization */
-        [data-testid="stFileUploader"] {
-            width: 100%;
-            padding: 1rem;
-            border: 4px dashed #38ff14; /* primary */
-            background-color: rgba(0,0,0,0.2);
-            border-radius: 0.75rem;
-            transition: all 0.3s;
-        }
-        [data-testid="stFileUploader"]:hover {
-            border-color: #ff00ff; /* secondary */
-            box-shadow: 0 0 25px rgba(255,0,255,0.4);
-        }
-        section[data-testid="stFileUploaderDropzone"] {
-            background-color: transparent;
-        }
         
+        /* FILE UPLOADER STYLING */
+        [data-testid="stFileUploader"] {
+            padding: 2rem;
+            border: 4px dashed #38ff14 !important; /* Neon Green */
+            background-color: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            text-align: center;
+        }
+        [data-testid="stFileUploader"] section {
+            background-color: transparent !important;
+        }
+        [data-testid="stFileUploader"] button {
+            display: none; /* Hide the default button if possible, or style it */
+        }
+        /* Style the 'Browse files' button inside uploader if visible */
+        [data-testid="stFileUploader"] button {
+            background-color: #38ff14 !important;
+            color: black !important;
+            border: none !important;
+            font-weight: bold !important;
+        }
+
+        /* BUTTON STYLING */
+        /* Primary Button (Ne voglio ancora) */
+        button[kind="primary"] {
+            background-color: #38ff14 !important;
+            color: black !important;
+            border: 2px solid black !important;
+            border-bottom: 6px solid black !important;
+            border-right: 6px solid black !important;
+            border-radius: 8px !important;
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-weight: 900 !important;
+            text-transform: uppercase;
+            font-size: 1.1rem !important;
+            transition: all 0.1s;
+        }
+        button[kind="primary"]:active {
+            transform: translate(4px, 4px);
+            border-bottom: 2px solid black !important;
+            border-right: 2px solid black !important;
+        }
+
+        /* Secondary Button (Condividi) */
+        button[kind="secondary"] {
+            background: linear-gradient(135deg, #ff00ff, #00ffff) !important;
+            color: white !important;
+            border: 2px solid black !important;
+            border-bottom: 6px solid black !important;
+            border-right: 6px solid black !important;
+            border-radius: 8px !important;
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-weight: 900 !important;
+            text-transform: uppercase;
+            font-size: 1.1rem !important;
+            text-shadow: 1px 1px 0 #000;
+        }
+        button[kind="secondary"]:active {
+            transform: translate(4px, 4px);
+            border-bottom: 2px solid black !important;
+            border-right: 2px solid black !important;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a0b2e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #38ff14;
+            border-radius: 4px;
+        }
     </style>
 """, unsafe_allow_html=True)
 
