@@ -16,6 +16,11 @@ st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=VT323&display=swap" rel="stylesheet" />
 
+<!-- Force Dark Mode -->
+<script>
+document.documentElement.classList.add('dark');
+</script>
+
 <script>
 tailwind.config = {
     darkMode: "class",
@@ -95,27 +100,19 @@ tailwind.config = {
 </script>
 
 <style>
-    /* FORCE MOBILE LAYOUT & WRAPPER STYLING */
-    .block-container {
-        max-width: 420px !important;
-        padding: 0 !important;
-        margin: 0 auto !important;
-        background-color: #f0f0f0; /* background-light */
-        min-height: 100vh;
-        border-left: 2px solid black;
-        border-right: 2px solid black;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
-        position: relative;
-        z-index: 10;
-    }
-    
-    /* Dark Mode Override for Wrapper */
-    @media (prefers-color-scheme: dark) {
-        .block-container {
-            background-color: #120821;
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-    }
+/* FORCE MOBILE LAYOUT & WRAPPER STYLING */
+.block-container {
+    max-width: 420px !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    background-color: #120821 !important; /* FORCE dark background */
+    min-height: 100vh;
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+    border-right: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
+    position: relative;
+    z-index: 10;
+}
 
     /* Background Pattern */
     .stApp {
