@@ -201,71 +201,64 @@ tailwind.config = {
 # Background Grid
 st.markdown('<div class="fixed inset-0 pointer-events-none opacity-20 bg-grid-pattern z-0"></div>', unsafe_allow_html=True)
 
-# HEADER & MARQUEE (Consolidated)
+# HEADER & MARQUEE (From code.html)
 st.markdown("""
 <header class="bg-[#120821] p-4 border-b-4 border-primary">
-<div class="flex items-center justify-center">
-<h1 class="text-4xl font-black tracking-tighter text-white italic glitch-text" data-text="ROASTAMI 💀">ROASTAMI 💀</h1>
+<div class="flex items-center justify-between">
+<span class="material-symbols-outlined text-primary text-3xl animate-pulse">skull</span>
+<h1 class="text-3xl font-black tracking-tighter text-white italic glitch-text" data-text="ROASTAMI 💀">ROASTAMI 💀</h1>
+<div class="w-8"></div>
 </div>
 </header>
 <div class="bg-primary border-b-4 border-black overflow-hidden py-2 whitespace-nowrap relative">
 <div class="animate-marquee inline-block">
-<span class="text-black font-mono font-bold text-2xl px-4 uppercase tracking-widest text-stroke-sm" style="text-shadow: 2px 2px 0 #ff00ff, -2px -2px 0 #00ffff;">⚠️ ATTENZIONE: DANNO EMOTIVO IMMINENTE ⚠️</span>
-</div>
-<div aria-hidden="true" class="animate-marquee inline-block">
-<span class="text-black font-mono font-bold text-2xl px-4 uppercase tracking-widest text-stroke-sm" style="text-shadow: 2px 2px 0 #ff00ff, -2px -2px 0 #00ffff;">⚠️ CRINGE LEVEL: CRITICAL ⚠️</span>
+<span class="text-black font-mono font-bold text-xl px-4 uppercase tracking-widest">⚠️ ATTENZIONE: DANNO EMOTIVO IMMINENTE ⚠️ NON APRIRE SE SEI SENSIBILE ⚠️ CRINGE LEVEL: CRITICAL ⚠️</span>
 </div>
 </div>
 """, unsafe_allow_html=True)
 
-# 4. HERO UPLOAD ZONE (Visual + Functional Overlay)
-# 4. HERO UPLOAD ZONE (Visual + Functional Overlay)
+# Main Content Wrapper
+st.markdown('<main class="flex-1 flex flex-col p-4 gap-6">', unsafe_allow_html=True)
+
+# HERO UPLOAD ZONE (From code.html)
 st.markdown("""
 <style>
-/* Container for the custom design */
 .upload-container {
 position: relative;
 width: 100%;
-height: 350px; /* Increased height for new design */
-margin-bottom: -350px; /* Pull the next element (uploader) up */
+height: 280px;
+margin-bottom: -280px;
 z-index: 1;
+margin-top: 8px;
 }
-
-/* Make the Streamlit uploader invisible but clickable */
 [data-testid="stFileUploader"] {
 position: relative;
 z-index: 99;
 opacity: 0;
-height: 350px;
+height: 280px;
 }
 [data-testid="stFileUploader"] section {
-height: 350px;
+height: 280px;
 padding: 0;
 }
 [data-testid="stFileUploader"] div[role="button"] {
-height: 350px;
+height: 280px;
 width: 100%;
 }
 </style>
 
 <div class="upload-container">
-<!-- Custom Design from code.html -->
-<div class="relative group mt-2 h-full">
-<div class="absolute -top-6 -right-5 z-20 transform rotate-12 text-5xl animate-bounce-in drop-shadow-lg">😂</div>
-<div class="absolute top-24 -left-6 z-20 transform -rotate-12 text-5xl animate-bounce-in drop-shadow-lg [animation-delay:0.2s]">☣️</div>
-<div class="absolute -bottom-6 -left-4 z-20 transform rotate-6 text-5xl animate-bounce-in drop-shadow-lg [animation-delay:0.4s]">🤡</div>
-<div class="absolute bottom-20 -right-7 z-20 transform -rotate-12 text-5xl animate-bounce-in drop-shadow-lg [animation-delay:0.6s]">🔥</div>
-
-<div class="relative bg-black/20 dark:bg-black/40 border-8 border-dashed border-primary hover:border-secondary transition-colors duration-300 rounded-xl p-8 flex flex-col items-center justify-center gap-4 cursor-pointer overflow-hidden shadow-glow hover:shadow-[0_0_40px_rgba(255,0,255,0.8)] animate-pulse-fast h-full">
-<div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-10 pointer-events-none animate-strobe"></div>
-
-<div class="bg-surface rounded-full p-4 border-4 border-primary shadow-glow">
-<span class="material-symbols-outlined text-primary text-6xl">cloud_upload</span>
+<div class="relative group mt-2">
+<div class="absolute -top-3 -right-3 z-20 transform rotate-12 text-4xl drop-shadow-md">😂</div>
+<div class="absolute -bottom-4 -left-2 z-20 transform -rotate-12 text-4xl drop-shadow-md">🔥</div>
+<div class="relative bg-black/20 dark:bg-black/40 border-4 border-dashed border-primary hover:border-secondary transition-colors duration-300 rounded-xl p-8 flex flex-col items-center justify-center gap-4 cursor-pointer overflow-hidden shadow-[0_0_15px_rgba(56,255,20,0.2)] hover:shadow-[0_0_25px_rgba(255,0,255,0.4)]">
+<div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-10 pointer-events-none"></div>
+<div class="bg-surface rounded-full p-4 border-2 border-primary shadow-glow animate-pulse-fast">
+<span class="material-symbols-outlined text-primary text-5xl">cloud_upload</span>
 </div>
-
 <div class="text-center z-10">
-<h2 class="text-white font-black text-3xl uppercase tracking-tight mb-1 drop-shadow-md text-stroke">Carica qui il tuo<br/><span class="text-primary text-4xl italic">PROFILO CRINGE</span></h2>
-<p class="text-gray-300 font-mono text-base mt-2 bg-black/50 inline-block px-2 py-1 rounded">Scanner radioattivo pronto.</p>
+<h2 class="text-white font-black text-2xl uppercase tracking-tight mb-1 drop-shadow-md">Carica qui il tuo<br/><span class="text-primary text-3xl italic">PROFILO CRINGE</span></h2>
+<p class="text-gray-300 font-mono text-sm mt-2 bg-black/50 inline-block px-2 py-1 rounded">Scanner radioattivo pronto.</p>
 </div>
 </div>
 </div>
@@ -423,6 +416,5 @@ with col2:
         st.toast("🔥 Screenshotta e umiliati su Instagram!", icon="📸")
 
 
-# Close Main and Wrapper
-# Close Main and Wrapper
-# st.markdown("</main></div>", unsafe_allow_html=True) # Removed as we are not using open tags anymore
+# Close Main Wrapper
+st.markdown('</main>', unsafe_allow_html=True)
