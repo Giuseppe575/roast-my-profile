@@ -332,27 +332,27 @@ if uploaded_file is not None:
         # Remove loading bar
         loading_placeholder.empty()
 
-        # 6. RESULT BOX
+        # 6. RESULT BOX (Windows 95 style with inline CSS)
         st.markdown(f"""
-<div class="relative mt-2 animate-shake">
-<div class="absolute inset-0 border-8 border-danger pointer-events-none shadow-glow-danger rounded-sm"></div>
-<div class="bg-gray-300 border-2 border-b-0 border-white border-r-gray-600 border-b-gray-600 border-l-white flex justify-between items-center px-2 py-1 select-none">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-red-600 text-sm font-bold">error</span>
-<span class="text-black font-bold font-sans text-xs tracking-wide">system_error.exe</span>
+<div style="position: relative; margin-top: 16px;">
+<!-- Windows 95 Title Bar -->
+<div style="background-color: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 4px 8px;">
+<div style="display: flex; align-items: center; gap: 8px;">
+<span class="material-symbols-outlined" style="color: #dc2626; font-size: 14px; font-weight: bold;">error</span>
+<span style="color: black; font-weight: bold; font-family: sans-serif; font-size: 12px;">system_error.exe</span>
 </div>
-<div class="flex gap-1">
-<div class="w-4 h-4 bg-gray-300 border border-gray-500 shadow-sm flex items-center justify-center text-xs font-bold pb-1 text-black">_</div>
-<div class="w-4 h-4 bg-gray-300 border border-gray-500 shadow-sm flex items-center justify-center text-xs font-bold pb-1 text-black">□</div>
-<div class="w-4 h-4 bg-red-600 border border-gray-500 shadow-sm flex items-center justify-center text-xs font-bold text-white leading-none">×</div>
+<div style="display: flex; gap: 4px;">
+<div style="width: 16px; height: 16px; background-color: #c0c0c0; border: 1px solid #808080; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: black;">_</div>
+<div style="width: 16px; height: 16px; background-color: #c0c0c0; border: 1px solid #808080; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: black;">□</div>
+<div style="width: 16px; height: 16px; background-color: #dc2626; border: 1px solid #808080; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: white;">×</div>
 </div>
 </div>
-<div class="bg-gray-200 border-2 border-t-0 border-white border-l-gray-400 border-r-black border-b-black p-4 relative overflow-hidden group">
-<div class="relative z-10 flex flex-col gap-4">
-<div class="bg-white border-2 border-gray-400 border-t-black border-l-black p-4 font-mono text-xl leading-snug text-black min-h-[160px]">
-<span class="bg-red-600 text-white px-1 font-bold text-base mb-2 inline-block">CRITICO</span>
-<p class="typewriter-text border-r-2 border-black">{roast_text} <br/><br/> &gt; Suggerimento: <span class="text-red-600 font-bold">Cancella l'account.</span></p>
-</div>
+<!-- Windows 95 Body -->
+<div style="background-color: #e0e0e0; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; padding: 16px;">
+<div style="background-color: white; border: 2px solid; border-color: #000000 #c0c0c0 #c0c0c0 #000000; padding: 16px; font-family: 'VT323', monospace; font-size: 1.25rem; line-height: 1.5; color: black; min-height: 120px;">
+<span style="background-color: #dc2626; color: white; padding: 2px 6px; font-weight: bold; font-size: 14px; margin-bottom: 8px; display: inline-block;">⚠️ CRITICO</span>
+<p style="margin-top: 12px;">{roast_text}</p>
+<p style="margin-top: 16px; color: #666;">&gt; Suggerimento: <span style="color: #dc2626; font-weight: bold;">Cancella l'account.</span></p>
 </div>
 </div>
 </div>
